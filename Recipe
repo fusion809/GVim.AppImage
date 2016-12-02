@@ -19,10 +19,10 @@ VIM_VERSION=$(wget -cq https://github.com/vim/vim/releases -O - | grep ".tar.gz"
 printf "VERSION is $VIM_VERSION\n"
 
 wget -cqO- https://github.com/vim/vim/archive/v$VIM_VERSION.tar.gz | tar xz --transform="s/vim-${VIM_VERSION}/vim/"
-if [[ -d AppDir ]]; then
-  rm -rf AppDir
+if [[ -d /AppDir ]]; then
+  rm -rf /AppDir
 fi
-mkdir -p AppDir/usr
+mkdir -p /AppDir/usr
 cd vim
 
 ./configure \
@@ -33,9 +33,9 @@ cd vim
   --enable-luainterp \
   --prefix=/usr
 make
-make install DESTDIR=../AppDir
+make install DESTDIR=/AppDir
 
-cd ../AppDir
+cd /AppDir
 wget -q https://github.com/probonopd/AppImages/raw/master/functions.sh -O ./functions.sh
 . ./functions.sh
 rm functions.sh
@@ -132,4 +132,4 @@ rm -f out/*.AppImage || true
 
 curl -sL "https://github.com/probonopd/AppImageKit/releases/download/6/AppImageAssistant_6-x86_64.AppImage" > AppImageAssistant
 chmod a+x AppImageAssistant
-./AppImageAssistant AppDir/ out/$APP"-"$VERSION"-"$ARCH".AppImage"
+./AppImageAssistant ./AppDir/ out/$APP"-"$VERSION"-"$ARCH".AppImage"
