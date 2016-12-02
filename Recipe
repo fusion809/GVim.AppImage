@@ -59,9 +59,9 @@ sudo cp /bin/grep ./usr/bin
 # Copy desktop and icon file to AppDir for AppRun to pick them up
 ########################################################################
 
-get_apprun
+sudo get_apprun
 
-get_desktop
+sudo get_desktop
 
 sudo find "${SOURCE_DIR}" -name "vim48x48.png" -exec cp {} "${LOWERAPP}.png" \;
 
@@ -70,10 +70,10 @@ sudo mkdir -p ./usr/lib/x86_64-linux-gnu
 #find /usr/lib -maxdepth 2 -type f  -name "libpython[23]*.so*" -exec cp {} ./usr/lib/x86_64-linux-gnu/ \;
 
 # copy dependencies
-copy_deps
+sudo copy_deps
 
 # Move the libraries to usr/bin
-move_lib
+sudo move_lib
 
 ########################################################################
 # Delete stuff that should not go into the AppImage
@@ -86,13 +86,13 @@ sudo find . -name "libX*" -delete
 
 # Delete dangerous libraries; see
 # https://github.com/probonopd/AppImages/blob/master/excludelist
-delete_blacklisted
+sudo delete_blacklisted
 
 ########################################################################
 # desktopintegration asks the user on first run to install a menu item
 ########################################################################
 
-get_desktopintegration "$LOWERAPP"
+sudo get_desktopintegration "$LOWERAPP"
 
 ########################################################################
 # Patch away absolute paths; it would be nice if they were relative
@@ -132,6 +132,6 @@ sudo mkdir -p /out
 
 sudo rm -f /out/*.AppImage || true
 
-curl -sL "https://github.com/probonopd/AppImageKit/releases/download/6/AppImageAssistant_6-x86_64.AppImage" > AppImageAssistant
-chmod a+x AppImageAssistant
-./AppImageAssistant ./AppDir/ /out/$APP"-"$VERSION"-"$ARCH".AppImage"
+sudo curl -sL "https://github.com/probonopd/AppImageKit/releases/download/6/AppImageAssistant_6-x86_64.AppImage" > AppImageAssistant
+sudo chmod a+x AppImageAssistant
+sudo ./AppImageAssistant ./AppDir/ /out/$APP"-"$VERSION"-"$ARCH".AppImage"
