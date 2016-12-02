@@ -15,7 +15,7 @@ env:
 
 script:
 - bash -e travis.sh $RECIPE
-- FILES=$(find out/ -name "*.AppImage")
+- FILES=$(find /out/ -name "*.AppImage")
 - bash -e bintray.sh $FILES
 
 notifications:
