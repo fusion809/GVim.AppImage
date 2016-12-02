@@ -21,9 +21,9 @@ printf "VERSION is $VIM_VERSION\n"
 
 wget -cqO- https://github.com/vim/vim/archive/v$VIM_VERSION.tar.gz | tar xz --transform="s/vim-${VIM_VERSION}/vim/"
 if [[ -d /AppDir ]]; then
-  rm -rf /AppDir
+  sudo rm -rf /AppDir
 fi
-mkdir -p /AppDir/usr
+sudo mkdir -p /AppDir/usr
 cd vim
 
 ./configure \
