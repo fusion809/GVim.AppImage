@@ -38,7 +38,7 @@ sudo make install DESTDIR=/AppDir
 
 cd /AppDir
 sudo wget -q https://github.com/fusion809/AppImages/raw/master/functions.sh -O ./functions.sh
-sudo bash -ex "functions.sh"
+sudo . ./functions.sh
 sudo rm functions.sh
 
 # Also needs grep for gvim.wrapper
