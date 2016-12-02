@@ -14,6 +14,6 @@ DOCKER=$(echo "${RECIPE}" | cut -d "-" -f 1) # Allow e.g., a recipe called "inks
 
 mkdir -p ./out/
 
-bash -ex Recipe
+sudo bash -ex Recipe
 
 ls -lh out/*.AppImage
