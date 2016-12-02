@@ -12,18 +12,18 @@ LOC="$PWD"
 APP=gvim
 LOWERAPP=${APP,,}
 
-sudo apt-get update
-sudo apt-get install -y wget curl gzip perl python python3 ruby lua5.2
-sudo apt-get build-dep -y vim-gtk
+apt-get update
+apt-get install -y wget curl gzip perl python python3 ruby lua5.2
+apt-get build-dep -y vim-gtk
 
 VIM_VERSION=$(wget -cq https://github.com/vim/vim/releases -O - | grep ".tar.gz" | head -n 1 | cut -d '"' -f 2 | cut -d '/' -f 5 | sed 's|.tar.gz||g' | sed 's|v||g')
 printf "VERSION is $VIM_VERSION\n"
 
 wget -cqO- https://github.com/vim/vim/archive/v$VIM_VERSION.tar.gz | tar xz --transform="s/vim-${VIM_VERSION}/vim/"
 if [[ -d /AppDir ]]; then
-  sudo rm -rf /AppDir
+  rm -rf /AppDir
 fi
-sudo mkdir -p /AppDir/usr
+mkdir -p /AppDir/usr
 cd vim
 
 ./configure \
@@ -34,16 +34,16 @@ cd vim
   --enable-luainterp \
   --prefix=/usr
 make
-sudo make install DESTDIR=/AppDir
+make install DESTDIR=/AppDir
 
 cd /AppDir
-sudo wget -q https://github.com/fusion809/AppImages/raw/master/functions.sh -O ./functions.sh
-sudo chmod +x ./functions.sh
+wget -q https://github.com/fusion809/AppImages/raw/master/functions.sh -O ./functions.sh
+chmod +x ./functions.sh
 . ./functions.sh
-sudo rm functions.sh
+rm functions.sh
 
 # Also needs grep for gvim.wrapper
-sudo cp /bin/grep ./usr/bin
+cp /bin/grep ./usr/bin
 
 # install additional dependencies for python
 #URL=$(apt-get install -qq --yes --no-download --reinstall --print-uris libpython2.7 libpython3.2 libperl5.14 liblua5.1-0 libruby1.9.1| cut -d' ' -f1 | tr -d "'")
@@ -59,59 +59,59 @@ sudo cp /bin/grep ./usr/bin
 # Copy desktop and icon file to AppDir for AppRun to pick them up
 ########################################################################
 
-sudo get_apprun
+get_apprun
 
-sudo get_desktop
+get_desktop
 
-sudo find "${SOURCE_DIR}" -name "vim48x48.png" -exec cp {} "${LOWERAPP}.png" \;
+find "${SOURCE_DIR}" -name "vim48x48.png" -exec cp {} "${LOWERAPP}.png" \;
 
-sudo mkdir -p ./usr/lib/x86_64-linux-gnu
+mkdir -p ./usr/lib/x86_64-linux-gnu
 # copy dynamically needed dlls
 #find /usr/lib -maxdepth 2 -type f  -name "libpython[23]*.so*" -exec cp {} ./usr/lib/x86_64-linux-gnu/ \;
 
 # copy dependencies
-sudo copy_deps
+copy_deps
 
 # Move the libraries to usr/bin
-sudo move_lib
+move_lib
 
 ########################################################################
 # Delete stuff that should not go into the AppImage
 ########################################################################
 
 # if those libraries are present, there will be a pango problem
-sudo find . -name "libpango*" -delete
-sudo find . -name "libfreetype*" -delete
-sudo find . -name "libX*" -delete
+find . -name "libpango*" -delete
+find . -name "libfreetype*" -delete
+find . -name "libX*" -delete
 
 # Delete dangerous libraries; see
 # https://github.com/probonopd/AppImages/blob/master/excludelist
-sudo delete_blacklisted
+delete_blacklisted
 
 ########################################################################
 # desktopintegration asks the user on first run to install a menu item
 ########################################################################
 
-sudo get_desktopintegration "$LOWERAPP"
+get_desktopintegration "$LOWERAPP"
 
 ########################################################################
 # Patch away absolute paths; it would be nice if they were relative
 ########################################################################
 
-sudo sed -i -e "s|/usr/share/|././/share/|g" usr/bin/vim
-sudo sed -i -e "s|/usr/lib/|././/lib/|g" usr/bin/vim
-sudo sed -i -e "s|/usr/share/doc/vim/|././/share/doc/vim/|g" usr/bin/vim
+sed -i -e "s|/usr/share/|././/share/|g" usr/bin/vim
+sed -i -e "s|/usr/lib/|././/lib/|g" usr/bin/vim
+sed -i -e "s|/usr/share/doc/vim/|././/share/doc/vim/|g" usr/bin/vim
 
 # Possibly need to patch additional hardcoded paths away, replace
 # "/usr" with "././" which means "usr/ in the AppDir"
 
 # remove unneeded stuff
-sudo rmdir ./usr/lib64 || true
-sudo rm -rf ./usr/bin/*tutor* || true
-sudo rm -rf ./usr/share/doc || true
+rmdir ./usr/lib64 || true
+rm -rf ./usr/bin/*tutor* || true
+rm -rf ./usr/share/doc || true
 #rm -rf ./usr/bin/vim || true
 # remove unneded links
-sudo find ./usr/bin -type l \! -name "gvim" -delete || true
+find ./usr/bin -type l \! -name "gvim" -delete || true
 
 cd ..
 
@@ -128,10 +128,10 @@ if [[ "$ARCH" = "i686" ]] ; then
 	APPIMAGE=$APP"-"$VERSION"-i386.AppImage"
 fi
 
-sudo mkdir -p /out
+mkdir -p /out
 
-sudo rm -f /out/*.AppImage || true
+rm -f /out/*.AppImage || true
 
-sudo curl -sL "https://github.com/probonopd/AppImageKit/releases/download/6/AppImageAssistant_6-x86_64.AppImage" > AppImageAssistant
-sudo chmod a+x AppImageAssistant
-sudo ./AppImageAssistant ./AppDir/ /out/$APP"-"$VERSION"-"$ARCH".AppImage"
+curl -sL "https://github.com/probonopd/AppImageKit/releases/download/6/AppImageAssistant_6-x86_64.AppImage" > AppImageAssistant
+chmod a+x AppImageAssistant
+./AppImageAssistant ./AppDir/ /out/$APP"-"$VERSION"-"$ARCH".AppImage"
