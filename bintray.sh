@@ -194,7 +194,7 @@ if [ "$IS_AN_APPIMAGE" ] ; then
     echo "$LINE" | dd of="$FILE" bs=1 seek=33651 count=512 conv=notrunc
     echo ""
     echo "Uploading and publishing zsync file for ${FILE}..."
-    zsyncmake -u "http://dl.bintray.com/${BINTRAY_REPO_OWNER}/${BINTRAY_REPO}/$(basename "$FILE")" "$FILE" -o "${FILE}.zsync"
+    zsyncmake -u "http://dl.bintray.com/${BINTRAY_REPO_OWNER}/${BINTRAY_REPO}/gvim" "$FILE" -o "${FILE}.zsync"
     ${CURL} -H Content-Type:application/octet-stream -T "${FILE}.zsync" "${API}/content/${BINTRAY_REPO_OWNER}/${BINTRAY_REPO}/${PCK_NAME}/${VERSION}/$(basename "$FILE").zsync?publish=1&override=1"
   else
     echo "zsyncmake not found, skipping zsync file generation and upload"
@@ -209,7 +209,7 @@ if [ "$IS_TYPE2_APPIMAGE" ] ; then
     dd bs=1 if="${FILE}" skip=$((0x$HEXOFFSET)) count=7 | grep "bintray" || exit 1
     echo ""
     echo "Uploading and publishing zsync file for ${FILE}..."
-    zsyncmake -u "http://dl.bintray.com/${BINTRAY_REPO_OWNER}/${BINTRAY_REPO}/$(basename "$FILE")" "$FILE" -o "${FILE}.zsync"
+    zsyncmake -u "http://dl.bintray.com/${BINTRAY_REPO_OWNER}/${BINTRAY_REPO}/gvim" "$FILE" -o "${FILE}.zsync"
     ${CURL} -H Content-Type:application/octet-stream -T "${FILE}.zsync" "${API}/content/${BINTRAY_REPO_OWNER}/${BINTRAY_REPO}/${PCK_NAME}/${VERSION}/$(basename "$FILE").zsync?publish=1&override=1"
   else
     echo "zsyncmake not found, skipping zsync file generation and upload"
