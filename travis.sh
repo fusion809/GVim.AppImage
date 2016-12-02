@@ -12,8 +12,8 @@ fi
 RECIPE="${1}"
 DOCKER=$(echo "${RECIPE}" | cut -d "-" -f 1) # Allow e.g., a recipe called "inkscape-standalone" to use the "inkscape" Docker image
 
-mkdir -p ./out/
+sudo mkdir -p /out/
 
-sudo bash -ex Recipe
+bash -ex Recipe
 
-ls -lh out/*.AppImage
+sudo ls -lh /out/*.AppImage
