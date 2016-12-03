@@ -9,7 +9,7 @@
 set +e
 
 USERNAME=fusion809
-PROJECT=AppImages
+PROJECT=GVim.AppImage
 
 USER_AGENT='Travis/1.8.0 (Compatible; curl '$(curl --version | head -n 1 | cut -d " " -f 1-4)')'
 
