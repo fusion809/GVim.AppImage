@@ -15,6 +15,7 @@ LOWERAPP=${APP,,}
 apt-get update
 apt-get install -y wget curl gzip perl python python3 ruby lua5.2
 apt-get build-dep -y vim-gtk
+URLS=$(apt-get -y install --print-uris lib64ncurses5 | cut -d "'" -f 2 | grep -e "^http")
 
 VIM_VERSION=$(wget -cq https://github.com/vim/vim/releases -O - | grep ".tar.gz" | head -n 1 | cut -d '"' -f 2 | cut -d '/' -f 5 | sed 's|.tar.gz||g' | sed 's|v||g')
 printf "VERSION is $VIM_VERSION\n"
@@ -115,8 +116,6 @@ find ./usr/bin -type l \! -name "gvim" -delete || true
 
 cd ..
 
-INSTALL="lib64ncurses5"
-URLS=$(apt-get $OPTIONS -y install --print-uris $INSTALL | cut -d "'" -f 2 | grep -e "^http")
 for URL in $URLS ; do
   if [ ! -f $(basename "$URL") ] ; then
     wget -c $URL
