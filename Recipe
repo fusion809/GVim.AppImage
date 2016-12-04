@@ -115,6 +115,18 @@ find ./usr/bin -type l \! -name "gvim" -delete || true
 
 cd ..
 
+INSTALL="lib64ncurses5"
+URLS=$(apt-get $OPTIONS -y install --print-uris $INSTALL | cut -d "'" -f 2 | grep -e "^http")
+for URL in $URLS ; do
+  if [ ! -f $(basename "$URL") ] ; then
+    wget -c $URL
+  fi
+done
+
+cd -
+find ../*.deb -exec dpkg -x {} . \; || true
+cd -
+
 # Package as AppImage
 GLIBC_NEEDED=$(find . -type f -executable -exec strings {} \; | grep ^GLIBC_2 | sed s/GLIBC_//g | sort --version-sort | uniq | tail -n 1)
 VERSION=${VIM_VERSION}.glibc$GLIBC_NEEDED
