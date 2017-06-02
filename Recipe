@@ -114,6 +114,8 @@ rm -rf ./usr/share/doc || true
 # remove unneded links
 find ./usr/bin -type l \! -name "gvim" -delete || true
 
+cp ./usr/share/icons/hicolor/48x48/apps/gvim.png .
+
 cd ..
 
 for URL in $URLS ; do
