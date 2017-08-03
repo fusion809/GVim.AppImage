@@ -87,7 +87,7 @@ find . -name "libX*" -delete
 
 # Delete dangerous libraries; see
 # https://github.com/probonopd/AppImages/blob/master/excludelist
-delete_blacklisted
+#delete_blacklisted
 
 ########################################################################
 # desktopintegration asks the user on first run to install a menu item
